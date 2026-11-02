@@ -144,7 +144,6 @@
       font-weight: 400;
     }
 
-    /* Touch-friendly Range Input */
     input[type="range"] {
       -webkit-appearance: none;
       appearance: none;
@@ -180,7 +179,6 @@
       cursor: pointer;
     }
 
-    /* Lever Track Custom Colors */
     #slider-interaction::-webkit-slider-thumb { border-color: var(--color-interaction); }
     #slider-roles::-webkit-slider-thumb { border-color: var(--color-roles); }
     #slider-culture::-webkit-slider-thumb { border-color: var(--color-culture); }
@@ -247,9 +245,9 @@
       font-size: 0.9rem;
       color: #334155;
       margin-top: 2px;
+      transition: color 0.2s ease;
     }
 
-    /* REMIX SECTION STYLING */
     .remix-card {
       background: #f8fafc;
       border: 1px solid var(--border);
@@ -411,7 +409,7 @@
         <div class="dot" style="background: var(--color-interaction);"></div>
         <div class="breakdown-content">
           <h4>Interaction</h4>
-          <p id="desc-interaction">Learners exchange greetings with multiple partners, respond to each other, and adapt their communication.</p>
+          <p id="desc-interaction"></p>
         </div>
       </div>
 
@@ -419,7 +417,7 @@
         <div class="dot" style="background: var(--color-roles);"></div>
         <div class="breakdown-content">
           <h4>Participant Roles</h4>
-          <p id="desc-roles">Adults and children alternate as models, questioners, and learners, contributing different knowledge and experiences.</p>
+          <p id="desc-roles"></p>
         </div>
       </div>
 
@@ -427,7 +425,7 @@
         <div class="dot" style="background: var(--color-culture);"></div>
         <div class="breakdown-content">
           <h4>Cultural Inquiry</h4>
-          <p id="desc-culture">Learners explore authentic cultural perspectives, practices, and products embedded within greeting routines.</p>
+          <p id="desc-culture"></p>
         </div>
       </div>
 
@@ -435,12 +433,12 @@
         <div class="dot" style="background: var(--color-life);"></div>
         <div class="breakdown-content">
           <h4>Beyond-Class Connections</h4>
-          <p id="desc-life">Instructional experiences connect with learners' personal relationships, home communities, and daily routines.</p>
+          <p id="desc-life"></p>
         </div>
       </div>
     </div>
 
-    <!-- REMIX YOUR LESSON (DESIGN SPRINT SECTION) -->
+    <!-- REMIX YOUR LESSON -->
     <div class="remix-card">
       <div class="section-title">Remix Your Lesson</div>
       <div class="remix-instructions">
@@ -489,12 +487,51 @@
       life: document.getElementById('val-life')
     };
 
+    const descDisplays = {
+      interaction: document.getElementById('desc-interaction'),
+      roles: document.getElementById('desc-roles'),
+      culture: document.getElementById('desc-culture'),
+      life: document.getElementById('desc-life')
+    };
+
+    const descriptions = {
+      interaction: {
+        low: "Learners primarily practice greetings individually or listen to teacher-led repetition models.",
+        mid: "Learners practice structured greeting dialogues in paired exchanges with assigned partners.",
+        high: "Learners exchange greetings with multiple partners, adapt communication dynamically, and negotiate shared meaning."
+      },
+      roles: {
+        low: "The teacher acts as the primary authority, directing all conversation turns and modeling responses.",
+        mid: "Learners take turns leading pair practice while following teacher-established scripts.",
+        high: "Adults and children alternate as models, questioners, and learners, contributing different knowledge and experiences."
+      },
+      culture: {
+        low: "Greetings are learned as direct vocabulary translations (e.g., matching phrases to English definitions).",
+        mid: "Learners observe common cultural greeting gestures and discuss when specific phrases are used.",
+        high: "Learners explore authentic cultural perspectives, social norms, and nuanced practices embedded within greeting routines."
+      },
+      life: {
+        low: "Practice is confined to fictional textbook characters or isolated classroom scenarios.",
+        mid: "Learners practice greetings by roleplaying real-world situations like meeting a neighbor or visiting a market.",
+        high: "Instructional experiences connect directly with learners' personal relationships, home communities, and daily routines."
+      }
+    };
+
     const canvas = document.getElementById('radarChart');
     const ctx = canvas.getContext('2d');
 
+    function getTier(val) {
+      if (val < 40) return 'low';
+      if (val < 70) return 'mid';
+      return 'high';
+    }
+
     function updateMix() {
+      // Update values and descriptions
       for (const key in sliders) {
-        valDisplays[key].innerText = sliders[key].value + '%';
+        const val = parseInt(sliders[key].value, 10);
+        valDisplays[key].innerText = val + '%';
+        descDisplays[key].innerText = descriptions[key][getTier(val)];
       }
       drawRadar();
     }
@@ -669,6 +706,7 @@ ${reasoning}
       }
     }
 
+    // Initial render
     updateMix();
   </script>
 </body>
