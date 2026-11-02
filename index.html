@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <title>The Relational Learning Mixer | ACTFL 2026</title>
   <style>
     :root {
@@ -28,13 +28,20 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
-    body {
+    html, body {
+      width: 100%;
+      overflow-x: hidden;
       background-color: var(--bg);
       color: var(--text-main);
-      padding: 24px 16px;
-      display: flex;
-      justify-content: center;
       line-height: 1.5;
+    }
+
+    body {
+      padding: 20px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
     }
 
     .container {
@@ -43,7 +50,7 @@
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 32px;
+      padding: 28px 20px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
     }
 
@@ -54,17 +61,26 @@
     h1 {
       font-size: 1.6rem;
       font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--text-main);
+      line-height: 1.2;
+    }
+
+    .intro-statement {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #0284c7;
       margin-bottom: 4px;
     }
 
     .subtitle {
       color: var(--text-muted);
-      font-size: 0.95rem;
+      font-size: 0.9rem;
     }
 
     .controls-bar {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       margin-top: 16px;
       margin-bottom: 24px;
       flex-wrap: wrap;
@@ -73,45 +89,47 @@
     .btn-pill {
       background: #f1f5f9;
       border: 1px solid #cbd5e1;
-      padding: 6px 14px;
+      padding: 8px 16px;
       border-radius: 20px;
       font-size: 0.85rem;
       font-weight: 500;
       color: #334155;
       cursor: pointer;
+      touch-action: manipulation;
       transition: all 0.2s ease;
     }
 
-    .btn-pill:hover {
+    .btn-pill:hover, .btn-pill:active {
       background: #e2e8f0;
     }
 
     .main-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 32px;
+      gap: 28px;
       align-items: center;
     }
 
     @media (max-width: 768px) {
       .main-grid {
         grid-template-columns: 1fr;
+        gap: 20px;
       }
       .container {
-        padding: 20px 16px;
+        padding: 20px 14px;
       }
     }
 
     .fader-group {
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 16px;
     }
 
     .fader-item {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 6px;
     }
 
     .fader-header {
@@ -126,33 +144,43 @@
       font-weight: 400;
     }
 
+    /* Touch-friendly Range Input */
     input[type="range"] {
       -webkit-appearance: none;
+      appearance: none;
       width: 100%;
-      height: 12px;
-      border-radius: 6px;
+      height: 14px;
+      border-radius: 7px;
       background: #e2e8f0;
       outline: none;
+      touch-action: manipulation;
+      margin: 4px 0;
     }
 
     input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
-      width: 22px;
-      height: 22px;
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
       background: #ffffff;
-      border: 2px solid #cbd5e1;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      border: 2.5px solid #cbd5e1;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
       cursor: pointer;
       transition: transform 0.1s ease;
     }
 
-    input[type="range"]::-webkit-slider-thumb:hover {
-      transform: scale(1.1);
+    input[type="range"]::-moz-range-thumb {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 2.5px solid #cbd5e1;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      cursor: pointer;
     }
 
-    /* Lever Custom Track Colors */
+    /* Lever Track Custom Colors */
     #slider-interaction::-webkit-slider-thumb { border-color: var(--color-interaction); }
     #slider-roles::-webkit-slider-thumb { border-color: var(--color-roles); }
     #slider-culture::-webkit-slider-thumb { border-color: var(--color-culture); }
@@ -163,12 +191,13 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      width: 100%;
     }
 
     .chart-title {
       font-size: 0.95rem;
       font-weight: 600;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
       color: var(--text-main);
     }
 
@@ -180,7 +209,7 @@
     hr {
       border: none;
       border-top: 1px solid var(--border);
-      margin: 32px 0;
+      margin: 28px 0;
     }
 
     .section-title {
@@ -225,15 +254,15 @@
       background: #f8fafc;
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 24px;
+      padding: 20px;
       margin-top: 24px;
     }
 
     .remix-instructions {
       font-size: 0.9rem;
       color: #475569;
-      margin-bottom: 20px;
-      line-height: 1.6;
+      margin-bottom: 18px;
+      line-height: 1.5;
     }
 
     .form-group {
@@ -256,7 +285,7 @@
       border-radius: 6px;
       font-size: 0.9rem;
       resize: vertical;
-      min-height: 70px;
+      min-height: 65px;
       outline: none;
       transition: border 0.2s;
     }
@@ -269,29 +298,49 @@
       background: #0f172a;
       color: #ffffff;
       border: none;
-      padding: 10px 18px;
+      padding: 12px 20px;
       border-radius: 6px;
       font-size: 0.9rem;
       font-weight: 600;
       cursor: pointer;
+      touch-action: manipulation;
       transition: background 0.2s ease;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      justify-content: center;
     }
 
-    .btn-copy:hover {
+    .btn-copy:hover, .btn-copy:active {
       background: #334155;
     }
 
     .toast {
       display: none;
       font-size: 0.85rem;
+      padding: 8px 12px;
+      border-radius: 4px;
+      margin-top: 10px;
+    }
+
+    .toast-success {
       color: #166534;
       background: #dcfce7;
-      padding: 6px 12px;
-      border-radius: 4px;
-      margin-left: 12px;
+      border: 1px solid #bbf7d0;
+    }
+
+    .toast-error {
+      color: #991b1b;
+      background: #fee2e2;
+      border: 1px solid #fecaca;
+    }
+
+    footer {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      width: 100%;
+      max-width: 900px;
     }
   </style>
 </head>
@@ -300,6 +349,7 @@
   <div class="container">
     <header>
       <h1>Try the Instructional Mixer</h1>
+      <div class="intro-statement">Learning is relational. Explore how instructional choices shape opportunities for meaningful connections.</div>
       <div class="subtitle">Arabic greetings | Same learning objective, different instructional configurations</div>
       
       <div class="controls-bar">
@@ -348,7 +398,7 @@
       <!-- RADAR CHART -->
       <div class="chart-container">
         <div class="chart-title">Combined lesson profile</div>
-        <canvas id="radarChart" width="320" height="320"></canvas>
+        <canvas id="radarChart" width="300" height="300"></canvas>
       </div>
     </div>
 
@@ -412,13 +462,17 @@
         <textarea id="input-reasoning" placeholder="How will these changes create meaningful opportunities for relational learning?"></textarea>
       </div>
 
-      <div style="display: flex; align-items: center; margin-top: 12px;">
+      <div style="display: flex; flex-direction: column; align-items: flex-start;">
         <button class="btn-copy" onclick="copyMyRemix()">Copy My Remix</button>
-        <span id="toast" class="toast">Copied to clipboard!</span>
+        <div id="toast" class="toast"></div>
       </div>
     </div>
 
   </div>
+
+  <footer>
+    ACTFL 2026 | Let's Learn: Family Co-Learning
+  </footer>
 
   <script>
     const sliders = {
@@ -439,7 +493,6 @@
     const ctx = canvas.getContext('2d');
 
     function updateMix() {
-      // Update percentage readouts
       for (const key in sliders) {
         valDisplays[key].innerText = sliders[key].value + '%';
       }
@@ -451,15 +504,13 @@
       const h = canvas.height;
       const centerX = w / 2;
       const centerY = h / 2;
-      const radius = 100;
+      const radius = 90;
 
       ctx.clearRect(0, 0, w, h);
 
-      // Diamond axes (Up, Right, Down, Left)
       const angles = [-Math.PI / 2, 0, Math.PI / 2, Math.PI];
       const levels = [0.25, 0.5, 0.75, 1.0];
 
-      // Draw grid diamonds
       ctx.strokeStyle = '#e2e8f0';
       ctx.lineWidth = 1;
 
@@ -475,7 +526,6 @@
         ctx.stroke();
       });
 
-      // Draw axis lines
       angles.forEach(angle => {
         ctx.beginPath();
         ctx.moveTo(centerX, centerY);
@@ -483,7 +533,6 @@
         ctx.stroke();
       });
 
-      // Values mapped to axes
       const values = [
         sliders.interaction.value / 100,
         sliders.roles.value / 100,
@@ -491,7 +540,6 @@
         sliders.life.value / 100
       ];
 
-      // Draw shape
       ctx.beginPath();
       values.forEach((val, i) => {
         const x = centerX + Math.cos(angles[i]) * radius * val;
@@ -507,29 +555,27 @@
       ctx.lineWidth = 3;
       ctx.stroke();
 
-      // Draw Colored Vertex Dots
       const colors = ['#0d9488', '#7c3aed', '#d97706', '#2563eb'];
       values.forEach((val, i) => {
         const x = centerX + Math.cos(angles[i]) * radius * val;
         const y = centerY + Math.sin(angles[i]) * radius * val;
         ctx.beginPath();
-        ctx.arc(x, y, 6, 0, Math.PI * 2);
+        ctx.arc(x, y, 5, 0, Math.PI * 2);
         ctx.fillStyle = colors[i];
         ctx.fill();
       });
 
-      // Axis Labels
       ctx.fillStyle = '#0f172a';
-      ctx.font = '14px -apple-system, BlinkMacSystemFont, sans-serif';
+      ctx.font = '13px -apple-system, BlinkMacSystemFont, sans-serif';
       ctx.textAlign = 'center';
 
-      ctx.fillText('Interaction', centerX, centerY - radius - 12);
+      ctx.fillText('Interaction', centerX, centerY - radius - 10);
       ctx.textAlign = 'left';
-      ctx.fillText('Roles', centerX + radius + 12, centerY + 4);
+      ctx.fillText('Roles', centerX + radius + 10, centerY + 4);
       ctx.textAlign = 'center';
-      ctx.fillText('Culture', centerX, centerY + radius + 24);
+      ctx.fillText('Culture', centerX, centerY + radius + 20);
       ctx.textAlign = 'right';
-      ctx.fillText('Life', centerX - radius - 12, centerY + 4);
+      ctx.fillText('Life', centerX - radius - 10, centerY + 4);
     }
 
     function applyPreset(type) {
@@ -560,6 +606,14 @@
       updateMix();
     }
 
+    function showToast(message, isSuccess = true) {
+      const toast = document.getElementById('toast');
+      toast.innerText = message;
+      toast.className = 'toast ' + (isSuccess ? 'toast-success' : 'toast-error');
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 3000);
+    }
+
     function copyMyRemix() {
       const obj = document.getElementById('input-objective').value || 'Not specified';
       const remix = document.getElementById('input-remix').value || 'Not specified';
@@ -583,14 +637,38 @@ Instructional Reasoning:
 ${reasoning}
 --------------------------------------------------`;
 
-      navigator.clipboard.writeText(textToCopy).then(() => {
-        const toast = document.getElementById('toast');
-        toast.style.display = 'inline';
-        setTimeout(() => { toast.style.display = 'none'; }, 2500);
-      });
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(textToCopy).then(() => {
+          showToast('Copied to clipboard!', true);
+        }).catch(() => {
+          fallbackCopy(textToCopy);
+        });
+      } else {
+        fallbackCopy(textToCopy);
+      }
     }
 
-    // Initial render
+    function fallbackCopy(text) {
+      try {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-9999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        const successful = document.execCommand('copy');
+        document.body.removeChild(textArea);
+        if (successful) {
+          showToast('Copied to clipboard!', true);
+        } else {
+          showToast('Copy failed. Please copy text manually.', false);
+        }
+      } catch (err) {
+        showToast('Copying not supported on this device/browser.', false);
+      }
+    }
+
     updateMix();
   </script>
 </body>
